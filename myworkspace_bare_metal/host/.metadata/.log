@@ -1,0 +1,20 @@
+!SESSION 2026-03-06 20:53:41.560 -----------------------------------------------
+eclipse.buildId=Version 2.1.0
+java.version=21.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data Z:\gitSpace\stm32learn\udemy embed c begin\myworkspace\host
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-03-06 20:53:47.066
+!MESSAGE Log4j2 initialized with config file Z:\gitSpace\stm32learn\udemy embed c begin\myworkspace\host\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-03-06 20:53:55.253
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-03-06 20:53:57.144
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM1
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-03-06 20:53:57.144
+!MESSAGE port: COM1
