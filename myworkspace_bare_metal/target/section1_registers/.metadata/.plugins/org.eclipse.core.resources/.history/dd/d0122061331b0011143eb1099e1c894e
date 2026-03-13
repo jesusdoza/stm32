@@ -1,6 +1,0 @@
-// turn on led PA5
-// Port:A
-// Pin:5
-int main(){
-    return 0;
-}
