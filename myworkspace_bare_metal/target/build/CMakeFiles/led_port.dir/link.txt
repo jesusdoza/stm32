@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\led_port.dir/objects.a
+Z:\CTOOLS\mingw32\bin\ar.exe qc CMakeFiles\led_port.dir/objects.a @CMakeFiles\led_port.dir\objects1.rsp
+Z:\CTOOLS\mingw32\bin\gcc.exe -g -TZ:/gitSpace/stm32learn/myworkspace_bare_metal/target/section1_registers/led_port/stm32f446xe_flash.ld -Wl,-Map=led_port.map -u _printf_float --specs=nosys.specs -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group -Wl,-z,max-page-size=8 -Wl,--print-memory-usage -Wl,--whole-archive CMakeFiles\led_port.dir/objects.a -Wl,--no-whole-archive -o led_port.exe -Wl,--out-implib,libled_port.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\led_port.dir\linkLibs.rsp

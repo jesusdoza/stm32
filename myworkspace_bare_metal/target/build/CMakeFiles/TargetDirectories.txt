@@ -1,0 +1,3 @@
+Z:/gitSpace/stm32learn/myworkspace_bare_metal/target/build/CMakeFiles/led_port.dir
+Z:/gitSpace/stm32learn/myworkspace_bare_metal/target/build/CMakeFiles/edit_cache.dir
+Z:/gitSpace/stm32learn/myworkspace_bare_metal/target/build/CMakeFiles/rebuild_cache.dir

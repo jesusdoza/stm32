@@ -18,7 +18,6 @@ RCC->AHB1ENR |= GPOICEN;
 GPIOA->MODER |= (1U<<10);
 GPIOA->MODER &=~(1U<<11);
 
-
 // set PC13 input pin
 GPIOC->MODER &=~(0b11<<26);
 

@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"Z:/gitSpace/stm32learn/myworkspace_bare_metal/target/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

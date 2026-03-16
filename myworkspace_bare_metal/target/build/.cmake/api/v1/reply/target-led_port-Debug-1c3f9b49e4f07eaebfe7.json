@@ -1,0 +1,416 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "led_port.exe"
+		},
+		{
+			"path" : "led_port.pdb"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"target_link_options",
+			"link_directories",
+			"add_custom_command",
+			"target_compile_options",
+			"target_compile_definitions",
+			"target_include_directories",
+			"target_sources"
+		],
+		"files" : 
+		[
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 89,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 139,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 86,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 165,
+				"parent" : 0
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 118,
+				"parent" : 0
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 103,
+				"parent" : 0
+			},
+			{
+				"command" : 6,
+				"file" : 0,
+				"line" : 95,
+				"parent" : 0
+			},
+			{
+				"command" : 7,
+				"file" : 0,
+				"line" : 92,
+				"parent" : 0
+			}
+		]
+	},
+	"codemodelVersion" : 
+	{
+		"major" : 2,
+		"minor" : 10
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g -std=gnu11"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wall"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wextra"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wpedantic"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wno-unused-parameter"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-O0"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-g3"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-ggdb"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 6,
+					"define" : "DEBUG"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "RTE_DEVICE_STARTUP_STM32F4XX"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 7,
+					"path" : "Z:/gitSpace/stm32learn/myworkspace_bare_metal/target/section1_registers/led_port/Inc"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "Z:/gitSpace/stm32learn/myworkspace_bare_metal/target/section1_registers/led_port"
+				}
+			],
+			"language" : "C",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "11"
+			},
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wall"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wextra"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wpedantic"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wno-unused-parameter"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-x"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "assembler-with-cpp"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-MMD"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-MP"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-O0"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-g3"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-ggdb"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 6,
+					"define" : "DEBUG"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 7,
+					"path" : "Z:/gitSpace/stm32learn/myworkspace_bare_metal/target/section1_registers/led_port/Inc"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "Z:/gitSpace/stm32learn/myworkspace_bare_metal/target/section1_registers/led_port"
+				}
+			],
+			"language" : "ASM",
+			"sourceIndexes" : 
+			[
+				3
+			]
+		}
+	],
+	"id" : "led_port::@6890427a1f51a3e7e1df",
+	"interfaceSources" : 
+	[
+		{
+			"path" : "Src/main.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"path" : "Src/syscall.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"path" : "Src/sysmem.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"path" : "Src/startup_stm32f446xx.S",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-g",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-TZ:/gitSpace/stm32learn/myworkspace_bare_metal/target/section1_registers/led_port/stm32f446xe_flash.ld",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-Wl,-Map=led_port.map",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-u",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "_printf_float",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "--specs=nosys.specs",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-Wl,--start-group",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-lc",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-lm",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-lstdc++",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-lsupc++",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-Wl,--end-group",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-Wl,-z,max-page-size=8",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-Wl,--print-memory-usage",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "-LZ:\\gitSpace\\stm32learn\\myworkspace_bare_metal\\target\\section1_registers\\led_port\\led_port",
+				"role" : "libraryPath"
+			},
+			{
+				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
+				"role" : "libraries"
+			}
+		],
+		"language" : "C"
+	},
+	"name" : "led_port",
+	"nameOnDisk" : "led_port.exe",
+	"orderDependencies" : 
+	[
+		{
+			"backtrace" : 4,
+			"id" : "led_port::@6890427a1f51a3e7e1df"
+		}
+	],
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"interfaceSourceIndexes" : 
+			[
+				0,
+				1,
+				2
+			],
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2
+			]
+		},
+		{
+			"interfaceSourceIndexes" : 
+			[
+				3
+			],
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				3
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 8,
+			"compileGroupIndex" : 0,
+			"path" : "Src/main.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 8,
+			"compileGroupIndex" : 0,
+			"path" : "Src/syscall.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 8,
+			"compileGroupIndex" : 0,
+			"path" : "Src/sysmem.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 8,
+			"compileGroupIndex" : 1,
+			"path" : "Src/startup_stm32f446xx.S",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "EXECUTABLE"
+}
