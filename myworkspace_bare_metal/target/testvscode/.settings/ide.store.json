@@ -6,5 +6,5 @@
   "device": "STM32F446RET6",
   "core": "Cortex-M4",
   "order": 0,
-  "toolchain": "GCC"
+  "toolchain": "CLANG_GCC"
 }

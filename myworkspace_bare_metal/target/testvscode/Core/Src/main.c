@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f446xx.h"
+#include <stdio.h>
 
 
 #define GPIOAEN		(1U<<0)
@@ -33,7 +34,6 @@ int main(void){
 //enable clock on port C and A
 RCC->AHB1ENR |= GPIOAEN;
 RCC->AHB1ENR |= GPOICEN;
-
 //set PA5 output pin
 GPIOA->MODER |= (1U<<10);
 GPIOA->MODER &=~(1U<<11);
