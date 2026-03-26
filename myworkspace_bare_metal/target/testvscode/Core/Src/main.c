@@ -1,60 +1,79 @@
-/* USER CODE BEGIN Header */
-/**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2026 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
-/* USER CODE END Header */
-/* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f446xx.h"
+#include <stdint.h>
 #include <stdio.h>
 
+#define GPIOAEN (1U << 0)
+#define USART2EN (1U << 17)
 
-#define GPIOAEN		(1U<<0)
-#define GPOICEN   	(1U<<2)
-#define PIN5		(1U<<5)
-#define PIN13		(1U<<13)
-#define LED_PIN 	PIN5
-#define BTN_PIN PIN13
+#define CR1_TE (1U << 3) // usart CR1 transmitter enable
+#define CR1_UE = (1u << 13)
 
-int main(void){
+#define SYS_FREQ 160000000
+#define APB1_CLK SYS_FREQ
 
-//enable clock on port C and A
-RCC->AHB1ENR |= GPIOAEN;
-RCC->AHB1ENR |= GPOICEN;
-//set PA5 output pin
-GPIOA->MODER |= (1U<<10);
-GPIOA->MODER &=~(1U<<11);
+#define UART_BAUDRATE 115200
 
-// set PC13 input pin
-GPIOC->MODER &=~(0b11<<26);
+static void uart_set_baudrate(USART_TypeDef *USARTx, uint32_t PeriphClk,
+                              uint32_t BaudRate);
+static uint16_t compute_uart_bd(uint32_t PeriphClk, uint32_t BaudRate);
 
+int main(void) {
 
-	while(1){
+  /*
+  usart2 pins
+  PA2 TX
+  PA3 RX
+  AF7 alternat function
 
-		//check if btn is pressed
-		 if(GPIOC->IDR & BTN_PIN){
-			GPIOA->BSRR |= LED_PIN;
-//			for ( i = 0;  i < 1000000; ++ i) {}
+  */
 
-		 }else{
+  while (1) {
+  }
+}
 
-				GPIOA->BSRR |= (1UL<<21);
+void usart2_tx_init(void) {
+  /*enable clock to GPIOA*/
+  RCC->AHB1ENR |= GPIOAEN;
+  /*config usart pins*/
+  // set PA2 to alternate function mode
+  GPIOA->MODER &= ~(0b11 << 4); // clear bits first space
+  GPIOA->MODER |= (0b10 << 4);  // then activate bits space
 
+  // set PA3
+  GPIOA->MODER &= ~(0b11 << 6); // clear bits first space
+  GPIOA->MODER |= (0b10 << 6);  // then activate bits space
 
-		 }
+  // set PA2 alternate function to UART_tx AF07
+  GPIOA->MODER &= ~(0b1111 << 8); // clear bits first space
+  GPIOA->AFR[0] |= (0b0111 << 8);
 
-	}
+  // set PA3 alternate function to UART_rx AF7
+  GPIOA->MODER &= ~(0b1111 << 12); // clear bits first space
+  GPIOA->AFR[0] |= (0b0111 << 12);
+
+  // config uart
+
+  // configure uart module clock access
+  RCC->APB1ENR |= USART2EN;
+
+  // config uart baudrate
+
+  uart_set_baudrate(USART2, APB1_CLK, UART_BAUDRATE)
+
+      // config transfer direction
+      USART2->CR1 = CR1_TE;
+  USART2->CR1 = CR1_UE;
+
+  // enable uart module
+}
+
+static void uart_set_baudrate(USART_TypeDef *USARTx, uint32_t PeriphClk,
+                              uint32_t BaudRate) {
+  USARTx->BRR = compute_uart_bd(PeriphClk, BaudRate);
+}
+
+static uint16_t compute_uart_bd(uint32_t PeriphClk, uint32_t BaudRate) {
+
+  return ((PeriphClk + (BaudRate / 2U)) / BaudRate);
 }
