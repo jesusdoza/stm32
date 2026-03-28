@@ -105,9 +105,9 @@ void uart2_write(int ch) {
 
 char uart2_read(void) {
   // wait until the receive data register is not empty no need to read if empty
-  while (!(USART2->SR & SR_RXNE)) {
-    // wait
-  }
+  // while (!(USART2->SR & SR_RXNE)) {
+  //   // wait
+  // }
 
   return USART2->DR; // read the received data from the data register
 }
