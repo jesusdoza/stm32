@@ -24,14 +24,19 @@ static uint16_t compute_uart_bd(uint32_t PeriphClk, uint32_t BaudRate);
 void usart2_tx_init(void);
 void uart2_write(int ch);
 
+// retargeting printf to uart2 aka implementing __io_putchar
+int __io_putchar(int ch) {
+  uart2_write(ch);
+  return ch;
+}
+
 // entry point
 int main(void) {
 
   usart2_tx_init();
 
   while (1) {
-    uart2_write('H');
-    uart2_write('E');
+    printf("hello from print 123 \n\r");
   }
 }
 
