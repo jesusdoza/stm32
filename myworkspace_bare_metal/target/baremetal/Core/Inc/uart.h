@@ -7,3 +7,5 @@
 
 // prototypes
 void usart2_tx_init(void);
+void usart2_rxtx_init(void);
+char uart2_read(void);

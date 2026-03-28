@@ -5,10 +5,11 @@
 // entry point
 int main(void) {
 
-  usart2_tx_init();
+  // usart2_tx_init();
+  usart2_rxtx_init();
 
   while (1) {
-    printf("hello from print modular h includes RELOAD \n\r");
+    printf("hello from print modular h bits cleared with binary \n\r");
   }
 
   return 0;
