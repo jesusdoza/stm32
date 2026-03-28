@@ -18,14 +18,12 @@ set(MX_Include_Dirs
 )
 
 # STM32CubeMX generated application sources
-set(MX_Application_Src
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/main.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/stm32f4xx_it.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/stm32f4xx_hal_msp.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/sysmem.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/syscalls.c
+file(GLOB MX_Application_Src
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/*.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../startup_stm32f446xx.s
 )
+# Remove system_stm32f4xx.c from application sources to avoid duplicate symbols
+list(REMOVE_ITEM MX_Application_Src "${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/system_stm32f4xx.c")
 
 # STM32 HAL/LL Drivers
 set(STM32_Drivers_Src
