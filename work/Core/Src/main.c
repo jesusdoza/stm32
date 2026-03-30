@@ -21,7 +21,9 @@
 #include "usb_host.h"
 #include <math.h>
 #include <stdbool.h>
-
+#include <stdint.h>
+#include <stdlib.h>
+#include <sys/_intsup.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -106,13 +108,24 @@ void CS43L22_Init(void) {
  * @brief  The application entry point.
  * @retval int
  */
-uint16_t bufferAudio[48];
+#define MAX_SAMPLES 1024
+
 // User-adjustable parameters
-float wave_frequency = 1.0f;        // Output frequency in Hz
-float wave_amplitude = 32767.5f;    // Amplitude (max 32767.5 for 16-bit DAC)
-const float sample_rate = 48000.0f; // I2S sample rate in Hz
-const int num_samples = 48;         // Number of samples per cycle
-uint16_t bufferAudio[48];
+float wave_frequency = 1.0f; // Output frequency in Hz
+int wave_amplitude = 32767;  // Amplitude (max 32767.5 for 16-bit DAC)
+                             // for 24 bit use 8388607.5f
+
+// These will be calculated at runtime
+int stepUp = 0; // Number of samples for the high part
+
+// PROTOTYPE
+void createWaveBuffer(uint16_t *buffer, int highDuty, int lowDuty,
+                      int sampleSize, int amplitude);
+
+const int highDuty = 2;
+const int lowDuty = 100;
+uint16_t sampleSize = (highDuty + lowDuty) * 2;
+uint16_t bufferAudio[204]; // Buffer to hold the wave samples
 
 int main(void) {
 
@@ -148,45 +161,8 @@ int main(void) {
 
   /* USER CODE END 2 */
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-
-  // setup sine wave data with 48 samples (1 cycle at 48kHz)
-
-  // **********************SINE WAVE GENERATION (UNCOMMENT TO
-  // USE)********************** Generate sine wave based on user parameters for
-  // stereo output (same data for left and right channels) for (int i = 0; i <
-  // num_samples; i++) {
-
-  //     float theta = 2.0f * M_PI * wave_frequency * ((float)i / sample_rate) *
-  //                   num_samples / num_samples;
-  //     uint16_t sample_value = (uint16_t)((sin(theta) + 1.0f) *
-  //     wave_amplitude); bufferAudio[i] = sample_value;
-  //     // bufferAudio[i+1] = sample_value;
-  // }
-
-  // **********************SQUARE WAVE GENERATION (UNCOMMENT TO
-  // USE)**********************
-  // generate square wave based on user parameters for stereo output (same data
-  // for left and right channels)
-  // Generate square wave based on user parameters
-  bool goNeg = false;
-  for (int i = 0; i < num_samples; i += 3) {
-    // float t = (float)i / num_samples; // Normalized time (0 to 1) within the cycle
-
-   double sampleValue = (2.0f * wave_amplitude); // High for first half
-    if (!goNeg) { // High for first half of the cycle
-      bufferAudio[i] = sampleValue;     // High
-      bufferAudio[i + 1] = sampleValue; // High
-      bufferAudio[i + 2] = sampleValue; // High
-      goNeg = true;
-    } else {
-      bufferAudio[i] = (sampleValue * -1.0);     // Low
-      bufferAudio[i + 1] = (sampleValue * -1.0); // Low
-      bufferAudio[i + 2] = (sampleValue * -1.0); // Low
-      goNeg = false;
-    }
-  }
+  // load array with values for the wave (high and low)
+  createWaveBuffer(bufferAudio, highDuty, lowDuty, sampleSize, 32767);
 
   // Initialize CS43L22 codec for audio output
   CS43L22_Init();
@@ -198,7 +174,8 @@ int main(void) {
   }
 
   // Start I2S DMA transfer (will loop automatically)
-  if (HAL_I2S_Transmit_DMA(&hi2s3, bufferAudio, 48) != HAL_OK) {
+  if (HAL_I2S_Transmit_DMA(&hi2s3, bufferAudio, sampleSize) !=
+      HAL_OK) { // args are (I2S handle, data buffer, number of samples)
     Error_Handler();
   }
 
@@ -209,6 +186,52 @@ int main(void) {
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
+}
+
+void createWaveBuffer(uint16_t *buffer, int highDuty, int lowDuty,
+                      int sampleSize, int amplitude) {
+
+  int highCounter = highDuty;
+  int lowCounter = lowDuty;
+  int variableFlag = 0; // Flag to track high/low state
+
+  for (int i = 0; i < sampleSize; i += 2) {
+
+    int sampleValue = 65000; // High for first half
+
+    if (highCounter > 0) { // High for first half of the cycle
+      buffer[i] = (sampleValue + variableFlag);     // High
+      buffer[i + 1] = (sampleValue + variableFlag); // High
+      variableFlag =
+          (variableFlag == 2)
+              ? 0
+              : 2; // add a small variation to prevent flat line (optional)
+      highCounter--;
+    } else if (lowCounter > 0 &&
+               highCounter == 0) {        // Low for second half of the cycle
+      buffer[i] = (0 + variableFlag);     // Low
+      buffer[i + 1] = (0 + variableFlag); // Low
+      lowCounter--;
+      variableFlag =
+          (variableFlag == 2)
+              ? 0
+              : 2; // add a small variation to prevent flat line (optional)
+    } else {
+      // Reset counters for next cycle
+      highCounter = highDuty;
+      lowCounter = lowDuty;
+
+      highCounter--;                                // Start new cycle with high
+      buffer[i] = (sampleValue + variableFlag);     // High
+      buffer[i + 1] = (sampleValue + variableFlag); // High
+      variableFlag =
+          (variableFlag == 2)
+              ? 0
+              : 2; // add a small variation to prevent flat line (optional)
+    }
+  }
+
+  return;
 }
 
 /**
@@ -473,7 +496,8 @@ static void MX_GPIO_Init(void) {
  */
 void Error_Handler(void) {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
+  /* User can add his own implementation to report the HAL error return state
+   */
   __disable_irq();
   while (1) {
   }
@@ -490,8 +514,8 @@ void Error_Handler(void) {
 void assert_failed(uint8_t *file, uint32_t line) {
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line
-     number, ex: printf("Wrong parameters value: file %s on line %d\r\n", file,
-     line) */
+     number, ex: printf("Wrong parameters value: file %s on line %d\r\n",
+     file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
