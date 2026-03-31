@@ -24,6 +24,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <sys/_intsup.h>
+#include <time.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -84,24 +85,6 @@ static HAL_StatusTypeDef CS43L22_Write(uint8_t reg, uint8_t value) {
                            &value, 1, 100);
 }
 
-void CS43L22_Init(void) {
-  // Reset the codec
-  HAL_GPIO_WritePin(CS43L22_RESET_GPIO_Port, CS43L22_RESET_Pin, GPIO_PIN_RESET);
-  HAL_Delay(10);
-  HAL_GPIO_WritePin(CS43L22_RESET_GPIO_Port, CS43L22_RESET_Pin, GPIO_PIN_SET);
-  HAL_Delay(10);
-
-  // Power down (recommended sequence)
-  CS43L22_Write(0x02, 0x01);
-  // Enable headphone output
-  CS43L22_Write(0x04, 0xAF);
-  // Set volume (0x1A: left, 0x1B: right, 0x00 = max, 0xE8 = min)
-  CS43L22_Write(0x1A, 0x0A); // -10dB
-  CS43L22_Write(0x1B, 0x0A);
-  // Power up (playback)
-  CS43L22_Write(0x02, 0x9E);
-}
-
 /* USER CODE END 0 */
 
 /**
@@ -122,8 +105,8 @@ int stepUp = 0; // Number of samples for the high part
 void createWaveBuffer(uint16_t *buffer, int highDuty, int lowDuty,
                       int sampleSize, int amplitude);
 
-const int highDuty = 2;
-const int lowDuty = 100;
+const int highDuty = 1;
+const int lowDuty = 1;
 uint16_t sampleSize = (highDuty + lowDuty) * 2;
 uint16_t bufferAudio[204]; // Buffer to hold the wave samples
 
@@ -186,6 +169,24 @@ int main(void) {
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
+}
+
+void CS43L22_Init(void) {
+  // Reset the codec
+  HAL_GPIO_WritePin(CS43L22_RESET_GPIO_Port, CS43L22_RESET_Pin, GPIO_PIN_RESET);
+  HAL_Delay(10);
+  HAL_GPIO_WritePin(CS43L22_RESET_GPIO_Port, CS43L22_RESET_Pin, GPIO_PIN_SET);
+  HAL_Delay(10);
+
+  // Power down (recommended sequence)
+  CS43L22_Write(0x02, 0x01);
+  // Enable headphone output
+  CS43L22_Write(0x04, 0xAF);
+  // Set volume (0x1A: left, 0x1B: right, 0x00 = max, 0xE8 = min)
+  CS43L22_Write(0x1A, 0x18);
+  CS43L22_Write(0x1B, 0x18);
+  // Power up (playback)
+  CS43L22_Write(0x02, 0x9E);
 }
 
 void createWaveBuffer(uint16_t *buffer, int highDuty, int lowDuty,
