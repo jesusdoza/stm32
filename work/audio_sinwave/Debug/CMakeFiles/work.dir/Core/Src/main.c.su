@@ -1,0 +1,5 @@
+Core/Src/main.c:121:main	24	static
+Core/Src/main.c:252:SystemClock_Config	88	static
+Core/Src/main.c:202:createWaveBuffer	28	static
+Core/Src/main.c:184:CS43L22_Init	40	static
+Core/Src/main.c:508:Error_Handler	0	static

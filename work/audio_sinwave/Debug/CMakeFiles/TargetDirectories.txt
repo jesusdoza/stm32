@@ -1,0 +1,7 @@
+Z:/gitSpace/stm32learn/work/build/Debug/CMakeFiles/work.dir
+Z:/gitSpace/stm32learn/work/build/Debug/CMakeFiles/edit_cache.dir
+Z:/gitSpace/stm32learn/work/build/Debug/CMakeFiles/rebuild_cache.dir
+Z:/gitSpace/stm32learn/work/build/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir
+Z:/gitSpace/stm32learn/work/build/Debug/cmake/stm32cubemx/CMakeFiles/USB_Host_Library.dir
+Z:/gitSpace/stm32learn/work/build/Debug/cmake/stm32cubemx/CMakeFiles/edit_cache.dir
+Z:/gitSpace/stm32learn/work/build/Debug/cmake/stm32cubemx/CMakeFiles/rebuild_cache.dir
