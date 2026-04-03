@@ -20,6 +20,7 @@
 #include "main.h"
 #include "usb_host.h"
 #include <math.h>
+#include <stdint.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -73,6 +74,11 @@ void MX_USB_HOST_Process(void);
  * @brief  The application entry point.
  * @retval int
  */
+
+int SINE_SAMPLES = 100;
+uint32_t sine_wave[100];
+double even;
+
 int main(void) {
 
   /* USER CODE BEGIN 1 */
@@ -114,12 +120,15 @@ int main(void) {
 // Sine wave parameters
 #define SINE_SAMPLES 100
 #define DAC_MAX 4095
-  uint32_t sine_wave[SINE_SAMPLES];
+
+  // set up sinewave lookup table (100 samples for 1 full cycle)
+  // uint32_t sine_wave[SINE_SAMPLES];
   for (int i = 0; i < SINE_SAMPLES; i++) {
     // sine_wave[i] = (uint32_t)((DAC_MAX / 2.0) *
     //                           (1.0 + sinf(2 * 3.14159265f * i /
     //                           SINE_SAMPLES)));
-    sine_wave[i] = (uint32_t)i / 2 == 0 ? DAC_MAX : 0;
+
+    sine_wave[i] = i % 2 == 0 ? DAC_MAX : 0;
   }
 
   // Enable DWT cycle counter for precise timing
@@ -129,38 +138,38 @@ int main(void) {
   DWT->CYCCNT = 0;
   DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 
-  uint32_t cpu_freq = HAL_RCC_GetHCLKFreq();
-  uint32_t target_freq = 10000; // 10 kHz update rate (adjust as needed)
-  uint32_t cycles_per_update = cpu_freq / target_freq;
+  // uint32_t cpu_freq = HAL_RCC_GetHCLKFreq();
+  // uint32_t target_freq = 10000; // 10 kHz update rate (adjust as needed)
 
+  int data_index = 0;
   while (1) {
     MX_USB_HOST_Process();
+    // Output at precise intervals using DWT
 
-    // Output fast square wave (max/0) for 2 seconds
-    uint32_t start = HAL_GetTick();
-    while ((HAL_GetTick() - start) < 2000) {
-      for (int i = 0; i < SINE_SAMPLES; i++) {
-        uint32_t t0 = DWT->CYCCNT;
-        HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, sine_wave[i]);
-        while ((DWT->CYCCNT - t0) < cycles_per_update) {
-          // wait
-        }
-      }
+    // start high
+    if ((int32_t)DWT->CYCCNT > 1000) {
+      // lastTrigger = DWT->CYCCNT; // increment by fixed interval for stability
+      HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R,
+                       DAC_MAX); // sine_wave[data_index]);
+      data_index = (data_index + 1) % SINE_SAMPLES;
     }
 
-    // Output fast ramp for 2 seconds
-    start = HAL_GetTick();
-    while ((HAL_GetTick() - start) < 2000) {
-      for (int j = 0; j < SINE_SAMPLES; j++) {
-        uint32_t t0 = DWT->CYCCNT;
-        uint32_t ramp = (j * DAC_MAX) / SINE_SAMPLES;
-        HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, ramp);
-        while ((DWT->CYCCNT - t0) < cycles_per_update) {
-          // wait
-        }
-      }
+    // go low stop high
+    if ((int32_t)DWT->CYCCNT > 10000) {
+      // lastTrigger = DWT->CYCCNT; // increment by fixed interval for stability
+      HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0);
+
+      data_index = (data_index + 1) % SINE_SAMPLES;
     }
-    // Loop back to square and ramp
+
+    // stay low
+    if ((int32_t)DWT->CYCCNT > 15000) {
+      // lastTrigger = DWT->CYCCNT; // increment by fixed interval for stability
+      HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0);
+
+      data_index = (data_index + 1) % SINE_SAMPLES;
+      DWT->CYCCNT = 0;
+    }
   }
   /* USER CODE END 3 */
 }
