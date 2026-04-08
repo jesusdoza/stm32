@@ -14,11 +14,10 @@ int main(void) {
   // Initialize ADC on PA1
   pa1_init();
 
-  startConversion();
-
   while (1) {
+    startConversion();
     sensor_value = adc_read();
-    printf("sensor value: %d \n\r", sensor_value);
+    printf("sensor value: %d \n\r", (int)sensor_value);
   }
 
   return 0;

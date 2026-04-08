@@ -1,16 +1,12 @@
 #include "adc.h"
 #include "stm32f446xx.h"
 
-#define APB2_ADC1EN (1U << 8) // Bit 8: ADC1 clock enable
 #define GPIOAEN (1U << 0)     // Bit 0: GPIOA clock enable
-#define PA1 (1U << 1)         // Bit 1: PA1 pin
+#define APB2_ADC1EN (1U << 8) // Bit 8: ADC1 clock enable
 #define ADC_CH1 (1U << 0)     // ADC channel 1 corresponds to PA1
 #define ADC_SEQ_LEN_1 (0x00)
-
-#define CR2_ADON (1U << 0) // Bit 0: ADC on/off
-
-#define CR2_SWSTART (1U << 30) // Bit 30: Start conversion of regular channels
-
+#define CR2_ADON (1U << 0)       // Bit 0: ADC on/off
+#define CR2_SWSTART (1U << 30)   // Bit 30: Start conversion of regular channels
 #define ADC_SR_EOC_BIT (1U << 1) // Bit 1: End of conversion flag
 
 void pa1_init(void) {
@@ -18,16 +14,16 @@ void pa1_init(void) {
   RCC->APB2ENR |= GPIOAEN;
 
   // config pin PA1 as analog input
-  GPIOA->MODER &= ~(0b11 << 2); // Clear mode bits for PA1
-  GPIOA->MODER |= (0b11 << 2);  // Set PA1 to analog mode
+  GPIOA->MODER |= (1U << 2); // Clear mode bits for PA1
+  GPIOA->MODER |= (1U << 3); // Set PA1 to analog mode
 
   RCC->APB2ENR |= APB2_ADC1EN;
 
   // conversion sequence start from channel 1 (PA1)
-  ADC1->SQR1 = ADC_CH1; // conversion sequence length
+  ADC1->SQR3 = ADC_CH1; // conversion sequence length
 
   // conversion sequence length is 1 (only one channel)
-  ADC1->SQR1 = (ADC_SEQ_LEN_1 << 20); // Set sequence length to 1
+  ADC1->SQR1 = (ADC_SEQ_LEN_1); // Set sequence length to 1
 
   // enable adc module
   ADC1->CR2 |= CR2_ADON;
