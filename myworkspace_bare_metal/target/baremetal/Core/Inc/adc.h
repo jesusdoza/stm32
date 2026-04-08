@@ -5,5 +5,6 @@
 
 void pa1_init(void);
 void startConversion(void);
-int32_t adc_read(void);
+uint32_t adc_read(void);
+
 #endif /* ADC_H */

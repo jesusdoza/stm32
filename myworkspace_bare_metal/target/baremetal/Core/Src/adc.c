@@ -11,15 +11,15 @@
 
 #define CR2_SWSTART (1U << 30) // Bit 30: Start conversion of regular channels
 
-#define ADC_SR_EOC (1U << 1) // Bit 1: End of conversion flag
+#define ADC_SR_EOC_BIT (1U << 1) // Bit 1: End of conversion flag
 
 void pa1_init(void) {
   // enable clock access to GPIOA
   RCC->APB2ENR |= GPIOAEN;
 
   // config pin PA1 as analog input
-  GPIOAEN->MODER &= ~(0b11 << 2); // Clear mode bits for PA1
-  GPIOAEN->MODER |= (0b11 << 2);  // Set PA1 to analog mode
+  GPIOA->MODER &= ~(0b11 << 2); // Clear mode bits for PA1
+  GPIOA->MODER |= (0b11 << 2);  // Set PA1 to analog mode
 
   RCC->APB2ENR |= APB2_ADC1EN;
 
@@ -42,7 +42,7 @@ uint32_t adc_read(void) {
 
   // wait for conversion to be complete
 
-  while (!(ADC1->SR & ADC_SR_EOC)) {
+  while (!(ADC1->SR & ADC_SR_EOC_BIT)) {
     // wait until the EOC (End of Conversion) flag is set
   }
 

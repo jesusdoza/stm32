@@ -1,17 +1,12 @@
 #include "main.h"
 #include "adc.h"
 #include "uart.h"
+#include <stdint.h>
 #include <stdio.h>
 
-volatile char received_char;
+uint32_t sensor_value = 0;
 // entry point
 int main(void) {
-  // give clock access to GPIOA
-  RCC->AHB1ENR |= GPIOAEN;
-
-  // set pin 5 of GPIOA as output
-  GPIOA->MODER &= ~(0b11 << 10); // clear pin 5 mode to 00 (input) / reset state
-  GPIOA->MODER |= (0b01 << 10);  // set pin 5 mode to 01 (output)
 
   // usart2_tx_init();
   usart2_rxtx_init();
@@ -19,9 +14,11 @@ int main(void) {
   // Initialize ADC on PA1
   pa1_init();
 
-  char msg[64];
-  uint32_t adc_value;
+  startConversion();
+
   while (1) {
+    sensor_value = adc_read();
+    printf("sensor value: %d \n\r", sensor_value);
   }
 
   return 0;
