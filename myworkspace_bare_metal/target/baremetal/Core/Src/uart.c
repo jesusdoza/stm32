@@ -124,6 +124,8 @@ static void uart_set_baudrate(USART_TypeDef *USARTx, uint32_t PeriphClk,
   return;
 }
 
+// retargeting printf to uart2
+// this function is called by printf to write each character to the uart
 int __io_putchar(int ch) {
   uart2_write(ch);
   return ch;
