@@ -8,6 +8,7 @@
 #define CR2_ADON (1U << 0)       // Bit 0: ADC on/off
 #define CR2_SWSTART (1U << 30)   // Bit 30: Start conversion of regular channels
 #define ADC_SR_EOC_BIT (1U << 1) // Bit 1: End of conversion flag
+#define CR2_CONT (1U << 1)       // Bit 1: Continuous conversion mode
 
 void pa1_init(void) {
   // enable clock access to GPIOA
@@ -30,6 +31,10 @@ void pa1_init(void) {
 }
 
 void startConversion(void) {
+
+  // enable continuous conversion mode
+  ADC1->CR2 |= CR2_CONT;
+
   // start conversion of regular channels
   ADC1->CR2 |= CR2_SWSTART;
 }
