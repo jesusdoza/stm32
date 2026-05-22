@@ -66,26 +66,30 @@ static void MX_TIM2_Init(void);
 #define PATTERN_LEN 24
 
 const float pattern_multipliers[PATTERN_LEN] = {
-    1,   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // 11 normal
-    11,                                // 1 large pulse (as wide as 11 normal)
-    1,   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // 11 normal
-    0.5,                               // 1 half
-    1                                  // 1 normal (to make even)
+    1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  // 11 normal
+    1,                                 // 1 large pulse (as wide as 11 normal)
+    1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 20, // 11 normal
+    10,
 };
+
+uint32_t patternTime = 0;
 
 uint32_t tim2_ch2_pattern[PATTERN_LEN];
 
 void Fill_TIM2_Pattern(void) {
-
-  // int normalMUltiplier = 1;
-  // int largeMultiplier = 2;
-
   uint32_t acc = 0;
+
   for (int i = 0; i < PATTERN_LEN; i++) {
     acc += (uint32_t)(BASE_PULSE * pattern_multipliers[i]);
     tim2_ch2_pattern[i] = acc;
   }
+
+  uint32_t last = tim2_ch2_pattern[PATTERN_LEN - 1];
+
+  __HAL_TIM_SET_AUTORELOAD(&htim2, last);
+  __HAL_TIM_SET_COUNTER(&htim2, 0);
 }
+
 /* USER CODE END 0 */
 
 /**
